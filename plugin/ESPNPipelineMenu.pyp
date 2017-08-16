@@ -7,24 +7,25 @@ import c4d
 import os
 from c4d import gui, bitmaps, plugins
 # custom libraries
-from pipeline.c4d import core 
-from pipeline.c4d import scene
-from pipeline.c4d import debug
-from pipeline.c4d import database
-from pipeline.c4d import submit
-from pipeline.c4d import gvars
-import pipeline.c4d.automation as auto
+from espntools import core 
+from espntools import scene
+from espntools import debug
+from espntools import database
+from espntools import submit
+from espntools import automation
+
+from espntools import __version__, __date__
+
 reload(core)
 reload(scene)
 reload(debug)
 reload(database)
 reload(submit)
-reload(auto)
-reload(gvars)
+reload(automation)
 
 debug.info(
     "Loaded ESPN frontend plug-in for C4D", 
-    "Version {0} : {1}".format(gvars.__version__, gvars.__date__)
+    "Version {0} : {1}".format(__version__, __date__)
     )
 
 PLUGIN_ID = 1037160

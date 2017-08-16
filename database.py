@@ -5,12 +5,16 @@ import json
 import os.path
 #
 from espntools import debug
-from espntools.gvars import *
 
-PRODUCTION_DB    = "Y:\\Workspace\\Scripts\\ESPNTools\\.json\\productions.json"
-GLOBALASSETS_DB  = "Y:\\Workspace\\Scripts\\ESPNTools\\.json\\global_assets.json"
-
-PRESETS_PATH  = "preset://espn.lib4d/{0}/{1}"
+__schema__     = [1.0, 1.0]
+__platform__   = "c4d"
+__dashboard__  = None
+__nasroot__    = "Y:\\Workspace"
+__pubroot__    = "Y:\\PublishData"
+__logdir__     = "Y:\\Workspace\\SCRIPTS\\ESPNTools\\.logs\\{0}"
+__globaldb__   = "Y:\\Workspace\\SCRIPTS\\ESPNTools\\.json\\productions.json"
+__assetsdb__   = "Y:\\Workspace\\SCRIPTS\\ESPNTools\\.json\\global_assets.json"
+__c4dpresets__ = "preset://espn.lib4d/{0}/{1}"
 
 # GETTERS ##########################################################################################
 def getProduction(prod_):
@@ -20,7 +24,7 @@ def getProduction(prod_):
             dest[k] = v
 
     merged_prod = {}
-    with open(PRODUCTION_DB, 'r') as stream:
+    with open(__globaldb__, 'r') as stream:
         full_db = json.load(stream)
 
         try:
@@ -31,26 +35,18 @@ def getProduction(prod_):
         # Therefore we merge the requested project dictionary over top of the default to create
         # a complete data set.
         return prod_db
-"""
-def getProductionDirty():
-    ''' Infers the project based on where the current scene is located. '''
-    scene_path = core.doc().GetDocumentPath()
-    scene_path = scene_path.split('\\')
-    prod_      = scene_path[3]
 
-    try:
-        prod   = PRODUCTIONS[proj_]
-        return prod
-    except KeyError:
-        raise debug.PipelineError(3)
-"""
+def getPlatformData(prod_):
+    ''' Gets the platform (C4D-specific) data for a particular production.'''
+    return getProduction(prod_)['json']['c4d']
+
 def getAllProductions():
     ''' Gets a list of all available / valid productions from the database. '''
     productions = []
-    with open(PRODUCTION_DB, 'r') as stream:
+    with open(__globaldb__, 'r') as stream:
         full_db = json.load(stream)
         for k,v in full_db.iteritems():
-            if (k == 'DEFAULT'):
+            if (k == 'NULL' or k == 'ESPN_META' or k == 'FOLDER_TEMPLATE'):
                 continue
             else:
                 productions.append(k)
@@ -62,41 +58,33 @@ def getAllProjects(prod_):
     #return [p for p in os.listdir(prod['project']) if os.path.isdir(os.path.join(prod['project'], p))]
     proj_list = []
     try:
-        dirs = os.listdir(prod['project'])
+        dirs = os.listdir(prod['folder_lookup']['animroot'])
         for d in dirs:
-            if (os.path.isdir(os.path.join(prod['project'], d))):
+            if (os.path.isdir(os.path.join(prod['folder_lookup']['animroot'], d))):
                 proj_list.append(d)
     except WindowsError:
         pass
     return sorted(proj_list)
 
+
 def getAllPresets(prod_):
     ''' Gets all render presets associated with a production.'''
-    prod = getProduction(prod_)
-    return sorted(prod["presets"])
+    return sorted(getPlatformData(prod_)["presets"])
+
     
 def getTeamDatabase(prod_):
     ''' Gets the team database for a production. '''
     prod_db  = getProduction(prod_)
-    if (prod_db['is_default'] == True):
-        raise debug.DatabaseError(1)
+    with open(prod_db['json']['teams'], 'r') as stream:
+        return json.load(stream)
 
-    team_db_ = prod_db['team_db']
-    db_path  = os.path.join(JSON_DB_PATH, '{0}.json'.format(team_db_))
-
-    with open(db_path, 'r') as stream:
-        full_db = json.load(stream)
-
-    return full_db
-
-def getTeam(prod_, tricode, squelch=False):
-    ''' Gets a team from a production, based on tricode or full name.'''
+def getTeam(prod_, lookup, squelch=False):
+    ''' Gets a team from a production using its key.'''
     team_db = getTeamDatabase(prod_)
     for k,v in team_db.iteritems():
-        if (tricode == k):
+        if (k == lookup):
             return team_db[k]
-        elif ('{0} {1}'.format(team_db[k]['city'], team_db[k]['nick']) == tricode):
-            return team_db[k]
+
     # if it gets this far, the team wasn't found in the database.
     #raise debug.DatabaseError(2, alert=1-squelch)
 
@@ -121,8 +109,8 @@ def getAllTeams(prod_, name='tricode'):
             team_ls.append('{0}'.format(team_db[k]['nick']))
         return sorted(team_ls)
 
-def getTeamColors(prod_, tricode, squelch=False):
-    team = getTeam(prod_, tricode, squelch=squelch)
+def getTeamColors(prod_, lookup, squelch=False):
+    team = getTeam(prod_, lookup, squelch=squelch)
     ret_colors = {
         'primary': c4d.Vector(*convertColor(team['primary'])),
         'secondary': c4d.Vector(*convertColor(team['secondary'])),
@@ -137,6 +125,7 @@ def isTricode(prod_, tricode):
     except:
         return False
 
+"""
 def makeTeamFolders(prod_):
     team_folder = getProduction(prod_)['teams']
     for t in getAllTeams(prod_):
@@ -147,6 +136,7 @@ def makeTeamFolders(prod_):
         if not os.path.isdir(tex_folder):
             os.makedirs(tex_folder)
     return True
+"""
 
 def convertColor(colorvec, to='float'):
     ''' Converts a color vector from 0-255 (int) to 0-1 (float) or back again. '''

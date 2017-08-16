@@ -9,7 +9,6 @@ from espntools import core
 from espntools import scene
 from espntools import database
 
-
 # TEAM AUTOMATION #################################################################################
 def assignTeamColors( tricode, location, swap=False ):
     scene_data    = scene.getSceneData()
