@@ -1,0 +1,58 @@
+DIALOGSTRINGS ESPNPipelineMenu
+{
+	MAIN_DIALOG           "ESPN Pipeline Menu";
+
+	FIRST_TAB_NAME        "Project / Scene Setup";
+	LBL_PROD_NAME         "Select Production:";
+	LBL_PROJ_NAME         "Project Name:";
+	DRP_PROJ_NAME         "";
+	CHK_EXISTING          "Use existing project";
+	LBL_SCENE_NAME        "Scene Name:";
+	LBL_FRAMERATE         "Framerate:";
+	RDO_FRAMERATE_24      "24 fps";
+	RDO_FRAMERATE_30      "30 fps";
+	RDO_FRAMERATE_60      "60 fps";
+	LBL_PREVIEW_NULL      " ";
+	LBL_PREVIEW_PROJ      "Project folder preview:";
+	LBL_PREVIEW_FILE      "Scene file preview:";
+	BTN_NEWPROJ_EXEC      "Create Pipeline Scene";
+	BTN_MIGPROJ_EXEC      "Migrate Scene";
+	BTN_RENAME_EXEC       "Rename Scene";
+	BTN_HELP_EXEC         "Instructions / help";
+	LBL_NEWPROJ_EXEC      "Sets the name of the project and the scene, and saves a backup >> ";
+	LBL_MIGPROJ_EXEC      "Migrates a pipelined scene into a new or existing project >>";
+	LBL_RENAME_EXEC       "Renames an existing scene in its current project >>";
+	LBL_PRESET_BOX        "Render preset";
+	BTN_SET_PRESET        "Set";
+
+	SECOND_TAB_NAME       "Rendering";
+	LBL_OUTPUT_PATHS      "Render Presets";
+	LBL_TAKE_UTILS        "Takes (render layers)";
+	BTN_SETOUTPUT         "Reset Render Folders";
+	BTN_PNG_OUTPUT        "PNG output";
+	BTN_EXR_OUTPUT        "EXR output";
+	BTN_NEWTAKE           "Make New Take";
+	BTN_VERSIONUP         "Version Up";
+	BTN_SUBMIT            "Submit Scene to Farm";
+	BTN_CREATE_OBJBUFFERS "Create Object Buffers";
+	THIRD_TAB_NAME        "Automation";
+	LBL_HOME_TRICODE      "Home Team";
+	LBL_AWAY_TRICODE      "Away Team";
+	IS_MATCHUP            "Matchup";
+	TEAM_SWITCH_EXEC      "Switch team colors / assets";
+	TEAM_SWITCH_GRP       "Team switching";
+	AUTO_UTILS_GRP        "Team color materials";
+	HOME_PRIMARY_EXEC     "Home primary";
+	HOME_SECONDARY_EXEC   "Home secondary";
+	HOME_TERTIARY_EXEC    "Home tertiary";
+	AWAY_PRIMARY_EXEC     "Away primary";
+	AWAY_SECONDARY_EXEC   "Away secondary";
+	AWAY_TERTIARY_EXEC    "Away tertiary";
+	AUTOMATION_HELP_EXEC  "Instructions / help";
+
+	SAVE_RENAME_TAB       "Save & Submit";
+	SAVE_BACKUP_EXEC      "Save Scene & Backup";
+	RENAME_EXEC           "Rename Scene";
+	SAVE_RENAME_HELP_EXEC "Instructions / help";
+	RELINK_TEXTURES_EXEC  "Relink Textures";
+}
