@@ -260,22 +260,24 @@ class ESPNMenu(gui.GeDialog):
         return True
 
     def setPreviewText(self):
-        prod_name     = self.productions[self.prod_id]
-        scene_name    = self.GetString(TXT_SCENE_NAME)
-        prod_folder   = database.getProduction(prod_name)['project']
         if self.GetBool(CHK_EXISTING):
             proj_name = self.projects[self.proj_id]
         else:
             proj_name = self.GetString(TXT_PROJ_NAME)
+        scene_name    = self.GetString(TXT_SCENE_NAME)
+
         # Don't allow spaces as the user types
         proj_name     =  proj_name.replace(' ', '_') 
         scene_name    = scene_name.replace(' ', '_')
 
+        prod_name     = self.productions[self.prod_id]
+        #prod_folder   = database.getProduction(prod_name)['folder_lookup']['c4d_project'].format(proj_name)
+        prod_folder   = self.live_scene.prod_data['folder_lookup']['c4d_project'].format(proj_name)
         # Generate preview paths
         scene_prev = '{0}_{1}.c4d'.format(proj_name, scene_name)
         proj_prev  = os.path.relpath(
-            "{0}\\{1}\\c4d\\".format(prod_folder, proj_name),
-            "Y:\\Workspace\\MASTER_PROJECTS\\"
+            prod_folder,
+            self.live_scene.prod_data['folder_lookup']['animroot']#"Y:\\Workspace\\MASTER_PROJECTS\\"
             )
 
         self.SetString(TXT_PROJ_NAME, proj_name)

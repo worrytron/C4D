@@ -254,13 +254,15 @@ class MetaScene(object):
     def _set_vscene_path(self):
         ''' Update internal path data for the scene when it is moved or renamed. '''
         try:
-            project_folder = self.prod_data['project']
+            project_folder = self.prod_data['folder_lookup']['c4d_project'].format(self.project_name)
         except KeyError:
             debug.info('', self.prod_data)
             raise debug.FileError(1)
         self.file_name     = '{0}_{1}.c4d'.format(self.project_name, self.scene_name)
-        self.file_folder   = os.path.join(self.prod_data['project'], self.project_name, 'c4d')
-        self.backup_folder = os.path.join(self.file_folder, 'backup')
+        #self.file_folder   = os.path.join(self.prod_data['project'], self.project_name, 'c4d')
+        self.file_folder   = self.prod_data['folder_lookup']['c4d_project'].format(self.project_name)
+        #self.backup_folder = os.path.join(self.file_folder, 'backup')
+        self.backup_folder = self.prod_data['folder_lookup']['c4d_backup'].format(self.project_name)
         self.file_path     = os.path.join(self.file_folder, self.file_name)
 
     ## Set operations (real scene)
@@ -293,19 +295,14 @@ class MetaScene(object):
 
     def _set_rscene_output_paths(self):
         ''' Generate render output paths from metadata and sets them in the active scene. '''
+        #output_path = os.path.join( self.prod_data['project'], self.project_name, 'render_3d', self.scene_name, 'v{0}'.format(str(self.version).zfill(3)), '$take', '{0}_{1}'.format(self.scene_name, '$take') )
         output_path = os.path.join(
-            self.prod_data['project'],
-            self.project_name,
-            'render_3d',
-            self.scene_name,
-            'v{0}'.format(str(self.version).zfill(3)),
-            '$take',
-            '{0}_{1}'.format(self.scene_name, '$take')
+            self.prod_data['folder_lookup']['render_3d'].format(self.project_name), 
+            self.scene_name, 'v{0}'.format(str(self.version).zfill(3)), 
+            '$take', '{0}_{1}'.format(self.scene_name, '$take')
             )
         multi_path = os.path.join(
-            self.prod_data['project'],
-            self.project_name,
-            'render_3d',
+            self.prod_data['folder_lookup']['render_3d'].format(self.project_name),
             self.scene_name,
             'v{0}'.format(str(self.version).zfill(3)),
             '$take_passes',
@@ -336,13 +333,16 @@ class MetaScene(object):
                 except WindowsError: 
                     debug.FileError(3)
 
-        folder_struct = self.prod_data['folders']
-        main_folder   = os.path.join(self.prod_data['project'], self.project_name)
+        folder_struct = database.getFolderStructure()["PROJECT"]
+        main_folder   = os.path.join(self.prod_data['folder_lookup']['animroot'], self.project_name)
 
-        mk_dir(main_folder)    
+        print "Creating new project: " + main_folder
+        mk_dir(main_folder)
         for main, sub in folder_struct.iteritems():
+            print "Adding: " + os.path.join(main_folder, main)
             mk_dir(os.path.join(main_folder, main))
             for s in sub: 
+                print "Adding: " + os.path.join(main_folder, main, s)
                 mk_dir(os.path.join(main_folder, main, s))
         return True
 

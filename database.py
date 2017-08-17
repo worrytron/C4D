@@ -36,9 +36,15 @@ def getProduction(prod_):
         # a complete data set.
         return prod_db
 
+def getFolderStructure():
+    with open(__globaldb__, 'r') as stream:
+        return json.load(stream)["FOLDER_TEMPLATE"]
+
 def getPlatformData(prod_):
     ''' Gets the platform (C4D-specific) data for a particular production.'''
-    return getProduction(prod_)['json']['c4d']
+    with open(getProduction(prod_)['json']['c4d']) as stream:
+        return json.load(stream)
+        
 
 def getAllProductions():
     ''' Gets a list of all available / valid productions from the database. '''
