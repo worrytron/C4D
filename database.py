@@ -118,9 +118,9 @@ def getAllTeams(prod_, name='tricode'):
 def getTeamColors(prod_, lookup, squelch=False):
     team = getTeam(prod_, lookup, squelch=squelch)
     ret_colors = {
-        'primary': c4d.Vector(*convertColor(team['primary'])),
-        'secondary': c4d.Vector(*convertColor(team['secondary'])),
-        'tertiary': c4d.Vector(*convertColor(team['tertiary']))
+        'primary': c4d.Vector(*hex2rgb(team['PRIMARY'])),
+        'secondary': c4d.Vector(*hex2rgb(team['SECONDARY'])),
+        'tertiary': c4d.Vector(*hex2rgb(team['TERTIARY']))
         }
     return ret_colors
 
@@ -143,6 +143,14 @@ def makeTeamFolders(prod_):
             os.makedirs(tex_folder)
     return True
 """
+
+def hex2rgb(hex_, to='float'):
+    vec = (int(hex_[0:2],16),
+           int(hex_[2:4],16),
+           int(hex_[4:6],16))
+    if (to == 'float'): vec = convertColor(vec)
+    elif (to == 'int'): pass
+    return vec
 
 def convertColor(colorvec, to='float'):
     ''' Converts a color vector from 0-255 (int) to 0-1 (float) or back again. '''

@@ -396,10 +396,14 @@ class ESPNMenu(gui.GeDialog):
     ### UI Refreshers ########################################################
     def onChangedProduction(self):
         if not (self.getProduction() == DRP_PROD_NAME_START_ID):
+            print self.getProduction()
             # clear dependent dropdowns / text fields
             self.toggleProjectSelected(flag=False)
             self.setEmptyDropdowns(proj=True, pres=True)
             self.setEmpty(TXT_PROJ_NAME)
+            # update metascene
+            self.live_scene.production = self.getProduction()
+            self.live_scene.prod_data = database.getProduction(self.live_scene.production)
             # repopulate depdendent fields
             self.populateProjects()
             self.populatePresets()

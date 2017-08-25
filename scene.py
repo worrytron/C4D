@@ -11,7 +11,6 @@ from c4d import gui
 from espntools import core
 from espntools import database
 from espntools import debug
-from espntools.gvars import *
 
 class MetaScene(object):
     ''' MetaScene is an mapper / wrapper for scene files in Cinema 4D's Python API. It consists of convenience functions
