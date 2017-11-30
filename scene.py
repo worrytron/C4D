@@ -295,20 +295,8 @@ class MetaScene(object):
     def _set_rscene_output_paths(self):
         ''' Generate render output paths from metadata and sets them in the active scene. '''
         #output_path = os.path.join( self.prod_data['project'], self.project_name, 'render_3d', self.scene_name, 'v{0}'.format(str(self.version).zfill(3)), '$take', '{0}_{1}'.format(self.scene_name, '$take') )
-        output_path = os.path.join(
-            self.prod_data['root'],
-            self.prod_data['folder_lookup']['render_3d'].format(self.project_name), 
-            self.scene_name, 'v{0}'.format(str(self.version).zfill(3)), 
-            '$take', '{0}_{1}'.format(self.scene_name, '$take')
-            )
-        multi_path = os.path.join(
-            self.prod_data['root'],
-            self.prod_data['folder_lookup']['render_3d'].format(self.project_name),
-            self.scene_name,
-            'v{0}'.format(str(self.version).zfill(3)),
-            '$take_passes',
-            '{0}_{1}'.format(self.scene_name, '$take')
-            )
+        output_path = self.prod_data['root'] + self.prod_data['folder_lookup']['render_3d'].format(self.project_name) +'/'+ self.scene_name +'/'+ 'v{0}'.format(str(self.version).zfill(3)) +'/'+ '$take' +'/'+ '{0}_{1}'.format(self.scene_name, '$take')
+        multi_path =  self.prod_data['root'] + self.prod_data['folder_lookup']['render_3d'].format(self.project_name) +'/'+ self.scene_name +'/'+ 'v{0}'.format(str(self.version).zfill(3)) +'/'+ '$take_passes' +'/'+ '{0}_{1}'.format(self.scene_name, '$take')
         core.setOutputPaths(output_path, multi_path)
         return True
 
