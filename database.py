@@ -9,11 +9,12 @@ from espntools import debug
 __schema__     = [1.0, 1.0]
 __platform__   = "c4d"
 __dashboard__  = None
-__nasroot__    = "Y:\\Workspace"
+__scriptroot__ = "Y:\\Workspace\\SCRIPTS\\.ESPNDevTools"
 __pubroot__    = "Y:\\PublishData"
-__logdir__     = "Y:\\Workspace\\SCRIPTS\\ESPNTools\\.logs\\{0}"
-__globaldb__   = "Y:\\Workspace\\SCRIPTS\\ESPNTools\\.json\\productions.json"
-__assetsdb__   = "Y:\\Workspace\\SCRIPTS\\ESPNTools\\.json\\global_assets.json"
+__jsondir__    = "{0}\\.json".format(__scriptroot__)
+__logdir__     = "{0}\\.logs".format(__scriptroot__)
+__globaldb__   = "{0}\\productions.json".format(__jsondir__)
+__assetsdb__   = "{0}\\global_assets.json".format(__jsondir__)
 __c4dpresets__ = "preset://espn.lib4d/{0}/{1}"
 
 # GETTERS ##########################################################################################
@@ -42,10 +43,10 @@ def getFolderStructure():
 
 def getPlatformData(prod_):
     ''' Gets the platform (C4D-specific) data for a particular production.'''
-    with open(getProduction(prod_)['json']['c4d']) as stream:
+    db = __jsondir__ + '\\' + prod_ + '\\c4d.json'
+    with open(db) as stream:
         return json.load(stream)
         
-
 def getAllProductions():
     ''' Gets a list of all available / valid productions from the database. '''
     productions = []
@@ -64,24 +65,23 @@ def getAllProjects(prod_):
     #return [p for p in os.listdir(prod['project']) if os.path.isdir(os.path.join(prod['project'], p))]
     proj_list = []
     try:
-        dirs = os.listdir(prod['folder_lookup']['animroot'])
+        animroot = prod['root'] + prod['folder_lookup']['animroot']
+        dirs = os.listdir(animroot)
         for d in dirs:
-            if (os.path.isdir(os.path.join(prod['folder_lookup']['animroot'], d))):
+            if (os.path.isdir(os.path.join(animroot, d))):
                 proj_list.append(d)
     except WindowsError:
         pass
     return sorted(proj_list)
 
-
 def getAllPresets(prod_):
     ''' Gets all render presets associated with a production.'''
     return sorted(getPlatformData(prod_)["presets"])
-
     
 def getTeamDatabase(prod_):
     ''' Gets the team database for a production. '''
-    prod_db  = getProduction(prod_)
-    with open(prod_db['json']['teams'], 'r') as stream:
+    db = __jsondir__ + '\\' + prod_ + '\\teams.json'
+    with open(db, 'r') as stream:
         return json.load(stream)
 
 def getTeam(prod_, lookup, squelch=False):

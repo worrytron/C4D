@@ -5,8 +5,8 @@ __maintainer__ = "Mark Rohrer"
 __copyright__  = "Copyright 2017, ESPN Productions"
 __license__    = "Educational use only, all rights reserved"
 __email__      = "mark.rohrer@espn.com"
-__status__     = "Soft launch"
-__version__    = [1,0,0]
-__date__       = "1/1/2017"
+__status__     = "Development"
+__version__    = [1,0,3]
+__date__       = "12/15/2017"
 
 print "INFO :: Loaded ESPN backend utilities for C4D : Version {0} : {1}".format(__version__, __date__)
