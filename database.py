@@ -9,7 +9,7 @@ from espntools import debug
 __schema__     = [1.0, 1.0]
 __platform__   = "c4d"
 __dashboard__  = None
-__scriptroot__ = "Y:\\Workspace\\SCRIPTS\\.ESPNDevTools"
+__scriptroot__ = "Y:\\Workspace\\SCRIPTS\\ESPNTools"
 __pubroot__    = "Y:\\PublishData"
 __jsondir__    = "{0}\\.json".format(__scriptroot__)
 __logdir__     = "{0}\\.logs".format(__scriptroot__)
