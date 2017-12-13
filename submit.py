@@ -211,9 +211,9 @@ class SubmissionDialog(gui.GeDialog):
     # Get C4D version
     version = c4d.GetC4DVersion()/1000
     version_map = {
-      17: "R:\\Program Files\\MAXON\\CINEMA 4D R17\\CINEMA 4D.exe",
-      15: "R:\\Program Files\\MAXON\\CINEMA 4D R15\\CINEMA 4D 64 Bit.exe",
-      14: "R:\\Program Files\\MAXON\\CINEMA 4D R14\\CINEMA 4D 64 Bit.exe"
+      17: "C:\\Program Files\\MAXON\\CINEMA 4D R17\\CINEMA 4D.exe",
+      15: "C:\\Program Files\\MAXON\\CINEMA 4D R15\\CINEMA 4D 64 Bit.exe",
+      14: "C:\\Program Files\\MAXON\\CINEMA 4D R14\\CINEMA 4D 64 Bit.exe"
     }
 
     if (init):

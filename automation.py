@@ -33,9 +33,9 @@ def relinkTextures( migrate=False ):
         Optional migrate flag will prompt the user to select which remaining textures they would like
         moved & relinked to production folders.'''
     doc          = c4d.documents.GetActiveDocument()
-    scn          = scene.Scene()
+    scn          = scene.MetaScene()
     doc_tex_dir  = os.path.join(doc.GetDocumentPath(), 'tex')
-    prod_tex_dir = os.path.join(scn.prod_data['assets'], 'TEXTURES')
+    prod_tex_dir = os.path.join(scn.prod_data['root'], scn.prod_data['folder_lookup']['textures'])
     # container dictionary of textures that have been relinked
     '''relinked_tex = {}'''
     # container for textures that haven't been checked in yet
@@ -56,7 +56,7 @@ def relinkTextures( migrate=False ):
         is_team_tex   = database.isTricode(scn.production, tricode_)
         # if it does contain a tricode prefix, we search for the texture in an asset folder instead
         if (is_team_tex): 
-            team_tex_dir = os.path.join(scn.prod_data['teams'], tricode_, 'tex')
+            team_tex_dir = os.path.join(scn.prod_data['root'], scn.prod_data['folder_lookup']['teamlogos3d'], tricode_, 'tex')
         else: 
             tricode_ = None
 
@@ -157,9 +157,9 @@ team's asset /tex/ folder.
     def run(self):
         ''' Iterates over all selected checkboxes in the UI, copying the checked textures into the correct
             folder for that production.'''
-        scn = scene.Scene()
-        global_texture_path = os.path.join(scn.prod_data['assets'], 'TEXTURES')
-        team_texture_path   = scn.prod_data['teams']
+        scn = scene.MetaScene()
+        global_texture_path = os.path.join(scn.prod_data['root'], scn.prod_data['folder_lookup']['textures'])
+        team_texture_path   = os.path.join(scn.prod_data['root'], scn.prod_data['folder_lookup']['teamlogos3d'], tricode_, 'tex')
 
         for i in range(len(self.CHKBOX_DATA)):
             #CHKBOX_DATA (path & tricode) is a parallel array to CHKBOX_START (UIIDs)

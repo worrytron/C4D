@@ -203,7 +203,7 @@ class ESPNMenu(gui.GeDialog):
         elif (id == SAVE_RENAME_HELP_EXEC):
             self.help('save_rename')
         elif (id == RELINK_TEXTURES_EXEC):
-            auto.relinkTextures(migrate=True)
+            automation.relinkTextures(migrate=True)
         elif (id == BTN_CREATE_OBJBUFFERS):
             self.createObjectBuffers()
         return True
